@@ -9,6 +9,7 @@
     "watch": "webpack server --mode=development --hot --progress --host=0.0.0.0",
     "build": "webpack --color --mode=production --progress"
   },
+  "type": "commonjs",
   "devDependencies": {
     "@types/three": "0.130.0",
     "@types/web-bluetooth": "^0.0.21",
