@@ -19,6 +19,7 @@
     "@webpack-cli/serve": "^2.0.5",
     "clean-webpack-plugin": "^3.0.0",
     "clipboard": "2.0.8",
+    "copy-webpack-plugin": "^13.0.1",
     "css-loader": "6.1.0",
     "eslint": "7.31.0",
     "file-loader": "6.2.0",

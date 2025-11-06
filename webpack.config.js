@@ -3,6 +3,7 @@ const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, argv) => ({
   entry: {
@@ -70,5 +71,15 @@ module.exports = (env, argv) => ({
     new CleanWebpackPlugin({
       dry: argv.mode !== "production",
     }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'plugin.json'), // 源文件
+          to: path.resolve(__dirname, 'dist/plugin.json') // 输出到 dist 根目录
+        },
+      ],
+    }),
   ],
+
+
 });
