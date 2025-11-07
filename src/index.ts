@@ -9,7 +9,6 @@ import Player from "./vue/Player";
 import Helper from "./vue/Helper";
 import Algs from "./vue/Algs";
 import { VueConstructor } from "vue/types/umd";
-import { deviceConnect } from "./common/bluetooth"
 
 /* eslint-disable */
 var _hmt: any = _hmt || [];
@@ -60,10 +59,3 @@ const vm = new Vue({
   render: (h): VNode => h(app),
 });
 export default vm;
-
-
-window.addEventListener("dblclick", async () =>{    //   双击事件
-    console.log("请求 22111 设备");
-    deviceConnect();
-
-});

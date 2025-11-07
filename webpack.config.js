@@ -74,9 +74,13 @@ module.exports = (env, argv) => ({
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, 'plugin.json'), // 源文件
-          to: path.resolve(__dirname, 'dist/plugin.json') // 输出到 dist 根目录
+          from: path.resolve(__dirname, 'plugin.json'),
+          to: path.resolve(__dirname, 'dist/plugin.json')
         },
+        {
+            from: path.resolve(__dirname, "src/preload.js"),
+            to: path.resolve(__dirname, "dist/preload.js"), 
+         },
       ],
     }),
   ],
