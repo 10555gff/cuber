@@ -2,7 +2,7 @@
 declare global {
   interface Window {
     deviceAPI: {
-      scanBluetoothDevices: () => void;
+      scanBluetoothDevices: () => Bluetooth;
     };
   }
 }
