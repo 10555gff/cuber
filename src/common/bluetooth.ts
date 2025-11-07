@@ -1,9 +1,9 @@
-import * as LZString from 'lz-string';
-import { Aes128Ecb } from './aes128.js';
+// import * as LZString from 'lz-string';
+// import { Aes128Ecb } from './aes128.js';
+import { LZString} from 'lzstring.ts';
 
 
-
-let decoder: Aes128Ecb | null = null;
+let decoder:any= null;
 let _chrct_cube: BluetoothRemoteGATTCharacteristic | null = null;
 let deviceName:string ='QY-QYSC-S-D2D3';
 let deviceMac:string = 'CC:A3:00:00:D2:D3';
@@ -37,29 +37,29 @@ function onCubeEvent(event: Event) {
 
 
 
-  // 🔹 初始化 AES-128 解密器（只执行一次）
-  if (!decoder) {
-    const decompressed= LZString.decompressFromEncodedURIComponent(KEYS[0]);
-    if (!decompressed) throw new Error("解压密钥失败");
-    const keyArray: number[] = JSON.parse(decompressed);
+  // // 🔹 初始化 AES-128 解密器（只执行一次）
+  // if (!decoder) {
+  //   const decompressed= LZString.decompressFromEncodedURIComponent(KEYS[0]);
+  //   if (!decompressed) throw new Error("解压密钥失败");
+  //   const keyArray: number[] = JSON.parse(decompressed);
 
-    decoder = new Aes128Ecb(keyArray);
-    console.log("✅ AES-128 解密器已初始化:", keyArray);
-  }
-
-
-
-  // 🔹 解密每个 16 字节块
-  const msg: Uint8Array[] = [];
-  for (let i = 0; i < encMsg.length; i += 16) {
-    const block = encMsg.slice(i, i + 16);
-    if (block.length < 16) break; // 忽略不足 16 字节的尾块
-    const decrypted = decoder.decrypt(block);
-    msg.push(decrypted);
-  }
+  //   decoder = new Aes128Ecb(keyArray);
+  //   console.log("✅ AES-128 解密器已初始化:", keyArray);
+  // }
 
 
-	console.log('[qiyicube] decrypted msg', msg);
+
+  // // 🔹 解密每个 16 字节块
+  // const msg: Uint8Array[] = [];
+  // for (let i = 0; i < encMsg.length; i += 16) {
+  //   const block = encMsg.slice(i, i + 16);
+  //   if (block.length < 16) break; // 忽略不足 16 字节的尾块
+  //   const decrypted = decoder.decrypt(block);
+  //   msg.push(decrypted);
+  // }
+
+
+	// console.log('[qiyicube] decrypted msg', msg);
 
 
 
@@ -76,7 +76,17 @@ function sendHello(mac:string) {
   for (var i = 5; i >= 0; i--) {
     content.push(parseInt(mac.slice(i * 3, i * 3 + 2), 16));
   }
-  return sendMessage(content);
+
+    // 🔹 初始化 AES-128 解密器（只执行一次）
+  if (!decoder) {
+    const decompressed= LZString.decompressFromEncodedURIComponent(KEYS[0]);
+    if (!decompressed) throw new Error("解压密钥失败");
+    const keyArray: number[] = JSON.parse(decompressed);
+
+    // decoder = new Aes128Ecb(keyArray);
+    console.log("✅ AES-128 解密器已初始化:", keyArray);
+  }
+  //return sendMessage(content);
 }
 
 
@@ -93,57 +103,57 @@ function crc16modbus(data: number[]):number {
 }
 
 
-	// content: [u8, u8, ..]
-	function sendMessage(content:number[]): Promise<void> {
-    if (!_chrct_cube) throw new Error('未连接 Characteristic');
+	// // content: [u8, u8, ..]
+	// function sendMessage(content:number[]): Promise<void> {
+  //   if (!_chrct_cube) throw new Error('未连接 Characteristic');
 
-    const msg: number[] = [0xfe];
-		msg.push(4 + content.length); // length = 1 (op) + cont.length + 2 (crc)
-		for (var i = 0; i < content.length; i++) {
-			msg.push(content[i]);
-		}
-		const crc = crc16modbus(msg);
-		msg.push(crc & 0xff, crc >> 8);
-		const npad = (16 - msg.length % 16) % 16;
-		for (let i = 0; i < npad; i++) {
-			msg.push(0);
-		}
-		const encMsg: number[] = [];
-
-
-  // 🔹 初始化 AES-128 解密器（只执行一次）
-  if (!decoder) {
-    const decompressed= LZString.decompressFromEncodedURIComponent(KEYS[0]);
-    if (!decompressed) throw new Error("解压密钥失败");
-    const keyArray: number[] = JSON.parse(decompressed);
-
-    decoder = new Aes128Ecb(keyArray);
-    console.log("✅ AES-128 解密器已初始化:", keyArray);
-  }
+  //   const msg: number[] = [0xfe];
+	// 	msg.push(4 + content.length); // length = 1 (op) + cont.length + 2 (crc)
+	// 	for (var i = 0; i < content.length; i++) {
+	// 		msg.push(content[i]);
+	// 	}
+	// 	const crc = crc16modbus(msg);
+	// 	msg.push(crc & 0xff, crc >> 8);
+	// 	const npad = (16 - msg.length % 16) % 16;
+	// 	for (let i = 0; i < npad; i++) {
+	// 		msg.push(0);
+	// 	}
+	// 	const encMsg: number[] = [];
 
 
+  // // 🔹 初始化 AES-128 解密器（只执行一次）
+  // if (!decoder) {
+  //   const decompressed= LZString.decompressFromEncodedURIComponent(KEYS[0]);
+  //   if (!decompressed) throw new Error("解压密钥失败");
+  //   const keyArray: number[] = JSON.parse(decompressed);
 
-		for (let i = 0; i < msg.length; i += 16) {
-			const block:number[] = msg.slice(i, i + 16);
-			decoder.encrypt(new Uint8Array(block));
-			for (var j = 0; j < 16; j++) {
-				encMsg[i + j] = block[j];
-			}
-		}
+  //   decoder = new Aes128Ecb(keyArray);
+  //   console.log("✅ AES-128 解密器已初始化:", keyArray);
+  // }
 
-  console.log("e:",encMsg);
 
-	 //decoder = decoder || $.aes128(JSON.parse(LZString.decompressFromEncodedURIComponent(KEYS[0])));
-		// for (let i = 0; i < msg.length; i += 16) {
-		// 	const block = msg.slice(i, i + 16);
-		// 	decoder.encrypt(block);
-		// 	for (let j = 0; j < 16; j++) {
-		// 		encMsg[i + j] = block[j];
-		// 	}
-		// }
-		// console.log('[qiyicube] send message to cube', msg, encMsg);
-		return _chrct_cube.writeValue(new Uint8Array(encMsg).buffer);
-	}
+
+	// 	for (let i = 0; i < msg.length; i += 16) {
+	// 		const block:number[] = msg.slice(i, i + 16);
+	// 		decoder.encrypt(new Uint8Array(block));
+	// 		for (var j = 0; j < 16; j++) {
+	// 			encMsg[i + j] = block[j];
+	// 		}
+	// 	}
+
+  // console.log("e:",encMsg);
+
+	//  //decoder = decoder || $.aes128(JSON.parse(LZString.decompressFromEncodedURIComponent(KEYS[0])));
+	// 	// for (let i = 0; i < msg.length; i += 16) {
+	// 	// 	const block = msg.slice(i, i + 16);
+	// 	// 	decoder.encrypt(block);
+	// 	// 	for (let j = 0; j < 16; j++) {
+	// 	// 		encMsg[i + j] = block[j];
+	// 	// 	}
+	// 	// }
+	// 	// console.log('[qiyicube] send message to cube', msg, encMsg);
+	// 	return _chrct_cube.writeValue(new Uint8Array(encMsg).buffer);
+	// }
 
 
 
