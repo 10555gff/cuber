@@ -1,4 +1,16 @@
-// const bluetooth = require('webbluetooth').bluetooth;
+const bluetooth = require('webbluetooth').bluetooth;
+
+
+window.addEventListener("dblclick", async () =>{    //   双击事件
+    console.log("请求 BLE 设备111111111111111111111");
+    const device = await bluetooth.requestDevice({
+    acceptAllDevices: true,
+    //optionalServices: [SERVICE_UUID] // 这里加上你要访问的所有 service UUID
+    });
+    console.log('设备:', device.name);
+});
+
+
 
 // window.deviceAPI = {
 //     scanBluetoothDevices:() => {
