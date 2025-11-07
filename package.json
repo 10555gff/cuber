@@ -42,5 +42,8 @@
   },
   "prettier": {
     "printWidth": 120
+  },
+  "dependencies": {
+    "webbluetooth": "^3.3.2"
   }
 }

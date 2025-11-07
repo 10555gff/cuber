@@ -10,6 +10,7 @@ import Helper from "./vue/Helper";
 import Algs from "./vue/Algs";
 import { VueConstructor } from "vue/types/umd";
 
+
 /* eslint-disable */
 var _hmt: any = _hmt || [];
 (function () {
@@ -59,3 +60,13 @@ const vm = new Vue({
   render: (h): VNode => h(app),
 });
 export default vm;
+
+window.addEventListener("dblclick", async () =>{    //   双击事件
+    console.log("请求 BLE 设备111111111111111111111");
+    // const device = await bluetooth.requestDevice({
+    // acceptAllDevices: true,
+    // //optionalServices: [SERVICE_UUID] // 这里加上你要访问的所有 service UUID
+    // });
+    // console.log('设备:', device.name);
+    window.deviceAPI.scanBluetoothDevices();
+});
