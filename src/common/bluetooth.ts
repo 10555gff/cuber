@@ -1,5 +1,7 @@
+let _gatt = null;
+let _chrct_cube:any=null;
 
-var _chrct_cube;
+let deviceName:string ='QY-QYSC-S-D2D3';
 var UUID_SUFFIX = '-0000-1000-8000-00805f9b34fb';
 var SERVICE_UUID = '0000fff0' + UUID_SUFFIX;
 var CHRCT_UUID_CUBE = '0000fff6' + UUID_SUFFIX;
@@ -11,29 +13,47 @@ export async function connectBLE(): Promise<void> {
   try {
     // const bluetooth:Bluetooth |null = await window.deviceAPI.scanBluetoothDevices();
     
-    const device:BluetoothDevice | null = await window.deviceAPI.requestDevice({
-		filters: [{name: 'QY-QYSC-S-D2D3'}],
-		optionalServices: [SERVICE_UUID] // 这里加上你要访问的所有 service UUID
-		});
-		console.log('设备:', device.name);
+    const device= await window.deviceAPI.requestDevice(deviceName,SERVICE_UUID);
+		console.log('设备:', device?.name);
 
-     // 2. 连接 GATT 服务
-     const gatt= await device.gatt!.connect();
+         // 2. 连接 GATT 服务
+    _gatt= await window.deviceAPI.connect();
     console.log('已连接 GATT Server');
 
-    // 3. 获取 Service
-    const service = await gatt.getPrimaryService(SERVICE_UUID);
+
+        // 3. 获取 Service
+    const service = await window.deviceAPI.getService(SERVICE_UUID);
     console.log('service:\n',service);
  
     // 4. 获取 Characteristic
-    const characteristic  = await service.getCharacteristic(CHRCT_UUID_CUBE);
+    const characteristic = await window.deviceAPI.getCharacteristic(CHRCT_UUID_CUBE);
     console.log('Characteristic:\n', characteristic);
 
-
     // 5. 订阅数据通知
-    _chrct_cube=await characteristic.startNotifications();
+    _chrct_cube=await characteristic?.startNotifications();
     _chrct_cube.addEventListener('characteristicvaluechanged', onCubeEvent);
     console.log('已订阅数据通知 ✅');
+
+
+    //     const device:BluetoothDevice | null = await window.deviceAPI.requestDevice({
+		// filters: [{name: 'QY-QYSC-S-D2D3'}],
+		// optionalServices: [SERVICE_UUID] // 这里加上你要访问的所有 service UUID
+		// });
+		// console.log('设备:', device.name);
+    //  // 2. 连接 GATT 服务
+    //  const gatt= await device.gatt!.connect();
+    // console.log('已连接 GATT Server');
+
+    // // 3. 获取 Service
+    // const service = await gatt.getPrimaryService(SERVICE_UUID);
+    // console.log('service:\n',service);
+ 
+    // // 4. 获取 Characteristic
+    // const characteristic  = await service.getCharacteristic(CHRCT_UUID_CUBE);
+    // console.log('Characteristic:\n', characteristic);
+
+
+
 
 
 

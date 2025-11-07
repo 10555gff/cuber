@@ -1,3 +1,14 @@
+declare interface Window {
+  deviceAPI: {
+    requestDevice:(deviceName:string, serviceUuid:string) => Promise<BluetoothDevice> | null;
+    connect:() => Promise<BluetoothRemoteGATTServer> | null;
+    getService:(serviceUuid:string) => Promise<BluetoothRemoteGATTService> | null;
+    getCharacteristic:(characteristicUuid:string) => Promise<BluetoothRemoteGATTCharacteristic> | null;
+
+    //
+  };
+}
+
 declare module "*.vue" {
   import Vue from "vue";
   export default Vue;
@@ -9,13 +20,4 @@ declare module "clipboard" {
   }
   export default ClipboardJS;
 }
-
-
-
-declare interface Window {
-  deviceAPI: {
-    requestDevice: (options: RequestDeviceOptions) => Promise<BluetoothDevice>;
-  };
-}
-
 
