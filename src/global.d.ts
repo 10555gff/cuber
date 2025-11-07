@@ -9,3 +9,13 @@ declare module "clipboard" {
   }
   export default ClipboardJS;
 }
+
+
+
+declare interface Window {
+  deviceAPI: {
+    requestDevice: (options: RequestDeviceOptions) => Promise<BluetoothDevice>;
+  };
+}
+
+
