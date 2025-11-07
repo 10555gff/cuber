@@ -7,12 +7,6 @@ let _characteristic=null;
 let _chrct_cube=null;
 
 
-
-
-
-
-
-
 window.deviceAPI = {
   async requestDevice(deviceName, serviceUuid) {
     _device = await bluetooth.requestDevice({
@@ -21,7 +15,6 @@ window.deviceAPI = {
     });
     return _device;
   },
-
 
   async connect(serviceUuid, characteristicUuid) {
     if (!_device) throw new Error("请先调用 requestDevice()");
@@ -32,7 +25,6 @@ window.deviceAPI = {
     _chrct_cube= await _characteristic.startNotifications();
     return _chrct_cube;
   }
-
 
 
 
