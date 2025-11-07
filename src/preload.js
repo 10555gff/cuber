@@ -1,15 +1,13 @@
 const { bluetooth } = require("webbluetooth");
 
 let _device = null;
-let _serverGatt=null;
+let _gatt=null;
 let _service=null;
 let _characteristic=null;
+let _chrct_cube=null;
 
 
-var _chrct_cube;
-var UUID_SUFFIX = '-0000-1000-8000-00805f9b34fb';
-var SERVICE_UUID = '0000fff0' + UUID_SUFFIX;
-var CHRCT_UUID_CUBE = '0000fff6' + UUID_SUFFIX;
+
 
 
 
@@ -23,19 +21,24 @@ window.deviceAPI = {
     });
     return _device;
   },
-  async connect() {
+
+
+  async connect(serviceUuid, characteristicUuid) {
     if (!_device) throw new Error("请先调用 requestDevice()");
-    _serverGatt=await _device.gatt.connect();
-    return _serverGatt;
-  },
-  async getService(serviceUuid) {
-    _service = await _serverGatt.getPrimaryService(serviceUuid);
-    return _service;
-  },
-  async getCharacteristic(characteristicUuid) {
+    if (!_device.gatt) throw new Error("设备不支持 GATT");
+    _gatt = await _device.gatt.connect();
+    _service = await _gatt.getPrimaryService(serviceUuid);
     _characteristic = await _service.getCharacteristic(characteristicUuid);
-    return _characteristic;
-  },
+    _chrct_cube= await _characteristic.startNotifications();
+    return _chrct_cube;
+  }
+
+
+
+
+
+
+
 
   // /**
   //  * 发送数据（带缓存）
