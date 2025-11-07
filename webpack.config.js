@@ -78,9 +78,13 @@ module.exports = (env, argv) => ({
           to: path.resolve(__dirname, 'dist/plugin.json')
         },
         {
-            from: path.resolve(__dirname, "src/preload.js"),
-            to: path.resolve(__dirname, "dist/preload.js"), 
-         },
+          from: path.resolve(__dirname, "src/preload.js"),
+          to: path.resolve(__dirname, "dist/preload.js"), 
+        },
+        {
+          from: path.resolve(__dirname, 'resource/lib'),
+          to: path.resolve(__dirname, 'dist/lib'),
+        },
       ],
     }),
   ],
