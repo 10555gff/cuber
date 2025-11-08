@@ -6,8 +6,14 @@ declare interface Window {
     // getCharacteristic:(characteristicUuid:string) => Promise<BluetoothRemoteGATTCharacteristic> | null;
 
     connect:(serviceUuid:string,characteristicUuid:string)=> Promise<BluetoothRemoteGATTCharacteristic> | null;
+    //write:(characteristic:BluetoothRemoteGATTCharacteristic, data:number [])=> Promise<void>;
+
+    sendConnetc:(data:number [])=> Promise<void>;
 
     //
+  };
+  AES:{
+      decoder: () =>any;
   };
 }
 

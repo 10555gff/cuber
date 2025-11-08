@@ -63,7 +63,7 @@ const vm = new Vue({
 export default vm;
 
 window.addEventListener("dblclick", async () =>{    //   双击事件
-    console.log("开始连接BLE设备");
+    console.log("开始连接魔方");
     // const device = await bluetooth.requestDevice({
     // acceptAllDevices: true,
     // //optionalServices: [SERVICE_UUID] // 这里加上你要访问的所有 service UUID
