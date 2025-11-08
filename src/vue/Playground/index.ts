@@ -1,6 +1,6 @@
 import Vue from "vue";
 import { Component, Provide, Ref } from "vue-property-decorator";
-
+import { bleKeymap } from "./bleKeymap";
 import Viewport from "../Viewport";
 import Setting from "../Setting";
 import World from "../../cuber/world";
@@ -291,9 +291,10 @@ export default class Playground extends Vue {
     }
   }
   onCubeChrt(data:number):void{
-     this.world.cube.twister.twist(new TwistAction("F"), false, true);
-
-    console.log("aaaaaaaaaaaaaaaaaajjjjjjjjjjjjjjja:",data);
+    const action = bleKeymap[data];
+    if (action) {
+      this.world.cube.twister.twist(new TwistAction(action), false, true);
+    }
   }
 
   loop(): void {
