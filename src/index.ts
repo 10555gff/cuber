@@ -9,8 +9,6 @@ import Player from "./vue/Player";
 import Helper from "./vue/Helper";
 import Algs from "./vue/Algs";
 import { VueConstructor } from "vue/types/umd";
-import { connectBLE } from "./common/bluetooth"
-
 
 /* eslint-disable */
 var _hmt: any = _hmt || [];
@@ -62,13 +60,3 @@ const vm = new Vue({
 });
 export default vm;
 
-window.addEventListener("dblclick", async () =>{    //   双击事件
-    console.log("开始连接魔方");
-    // const device = await bluetooth.requestDevice({
-    // acceptAllDevices: true,
-    // //optionalServices: [SERVICE_UUID] // 这里加上你要访问的所有 service UUID
-    // });
-    // console.log('设备:', device.name);
-    connectBLE();
-    
-});

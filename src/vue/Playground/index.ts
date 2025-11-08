@@ -232,6 +232,10 @@ export default class Playground extends Vue {
       this.callback();
     });
     this.loop();
+
+    window.addEventListener("dblclick", async () =>{    //   双击事件
+      window.deviceAPI.bindBluetoothDevices(this.onCubeChrt);
+    });
   }
 
   get score(): string {
@@ -285,6 +289,11 @@ export default class Playground extends Vue {
       this.world.cube.dirty = true;
       this.world.cube.updateMatrix();
     }
+  }
+  onCubeChrt(data:number):void{
+     this.world.cube.twister.twist(new TwistAction("F"), false, true);
+
+    console.log("aaaaaaaaaaaaaaaaaajjjjjjjjjjjjjjja:",data);
   }
 
   loop(): void {

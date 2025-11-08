@@ -10,11 +10,9 @@ declare interface Window {
 
     sendConnetc:(data:number [])=> Promise<void>;
 
-    //
+    bindBluetoothDevices:(callback:any)=> Promise<void>;
   };
-  AES:{
-      decoder: () =>any;
-  };
+
 }
 
 declare module "*.vue" {
